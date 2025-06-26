@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,6 +19,13 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'libre-caslon': ['Libre Caslon Text', 'serif'],
+				'manrope': ['Manrope', 'sans-serif'],
+			},
+			letterSpacing: {
+				'wider-custom': '0.1em',
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
