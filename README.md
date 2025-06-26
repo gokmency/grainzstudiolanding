@@ -1,18 +1,14 @@
-# Welcome to your Lovable project
+# GRAINZSTUDIO
+
+Creative studio crafting visual narratives that transcend ordinary.
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/c3711737-3d7d-40fa-a075-30069864d38b
+A modern web presence for Grainz Studio - where ideas spark movements.
 
 ## How can I edit this code?
 
 There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/c3711737-3d7d-40fa-a075-30069864d38b) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
 
 **Use your preferred IDE**
 
@@ -62,12 +58,4 @@ This project is built with:
 
 ## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/c3711737-3d7d-40fa-a075-30069864d38b) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Build and deploy using standard Vite deployment methods to your preferred hosting platform.
