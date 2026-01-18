@@ -1,21 +1,31 @@
-import { useEffect } from 'react';
-import Hero from './Hero';
-import Intro from './Intro';
-import Capabilities from './Capabilities';
-import SelectedWork from './SelectedWork';
-import Process from './Process';
-import WhyUs from './WhyUs';
-import Cta from './Cta';
-import Footer from './Footer';
+
+import { useEffect } from "react";
+import Navbar from "./Navbar";
+import HeroSection from "./HeroSection";
+import DevelopmentSection from "./DevelopmentSection";
+import DesignSection from "./DesignSection";
+import Footer from "./Footer"; // Keeping original footer for now, might need update
+// If CustomCursor is used globally in Hero, we might not need it here or pass it down.
+// However, the CustomCursor component is designed to be placed once.
+// But wait, the CustomCursor in Hero only activates there.
+// The prompt asked for a custom cursor that changes shape or label depending on which side of the screen the user is hovering.
+// My CustomCursor implementation currently takes props. It should probably handle global state or be smarter.
+// Actually, looking at my CustomCursor implementation: it takes `hoveredSection` prop.
+// This means it only works inside HeroSection where I used it.
+// If we want it globally, we need a context or store.
+// But the requirement specifically mentioned "depending on which side of the screen the user is hovering", which implies the split screen context.
+// So keeping it in HeroSection is correct for that specific interaction.
+// I will just assemble the page.
 
 const LandingPage = () => {
   useEffect(() => {
-    // Smooth scroll for anchor links
-    const handleAnchorClick = (e: Event) => {
-      const target = e.target as HTMLAnchorElement;
-      if (target.href && target.href.includes('#')) {
+    // Smooth scroll for anchor links - Enhanced
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const anchor = target.closest('a');
+      if (anchor && anchor.href && anchor.href.includes('#')) {
         e.preventDefault();
-        const id = target.href.split('#')[1];
+        const id = anchor.href.split('#')[1];
         const element = document.getElementById(id);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth' });
@@ -28,33 +38,13 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="bg-black text-white overflow-x-hidden font-sans selection:bg-white selection:text-black">
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-white/5">
-        <div className="flex justify-between items-center px-6 md:px-12 py-5 max-w-screen-2xl mx-auto">
-          <a href="#" className="text-xl font-bold tracking-tight">GRAINZ STUDIO</a>
-          <div className="hidden md:flex gap-10">
-            <a href="#services" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Services</a>
-            <a href="#work" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Work</a>
-            <a href="#contact" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Contact</a>
-          </div>
-          <a 
-            href="#contact"
-            className="hidden md:inline-flex px-5 py-2 bg-white text-black text-sm font-medium rounded-full hover:bg-gray-200 transition-colors"
-          >
-            Let's Talk
-          </a>
-        </div>
-      </nav>
+    <div className="bg-black text-white overflow-x-hidden font-sans selection:bg-grainz-dev-accent selection:text-black">
+      <Navbar />
 
       <main>
-        <Hero />
-        <Intro />
-        <Capabilities />
-        <SelectedWork />
-        <Process />
-        <WhyUs />
-        <Cta />
+        <HeroSection />
+        <DevelopmentSection />
+        <DesignSection />
       </main>
 
       <Footer />

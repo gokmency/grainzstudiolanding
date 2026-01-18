@@ -1,42 +1,43 @@
-
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, expect
 
 def verify_grainz_studio():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
+        # Mobile View Verification
+        context_mobile = browser.new_context(viewport={'width': 375, 'height': 812})
+        page_mobile = context_mobile.new_page()
+        page_mobile.goto("http://localhost:3000")
 
-        # Navigate to the local server
-        try:
-            page.goto("http://localhost:8080", timeout=30000)
+        # Wait for hero content
+        expect(page_mobile.get_by_text("Build & Scale")).to_be_visible(timeout=10000)
+        expect(page_mobile.get_by_text("Form & Function")).to_be_visible()
 
-            # Wait for content to load (check for Hero text)
-            page.wait_for_selector("text=Design and build digital experiences")
+        # Take mobile screenshot
+        page_mobile.screenshot(path="verification/mobile_view.png")
+        print("Mobile view verified")
 
-            # Take a screenshot of the Hero section
-            page.screenshot(path="verification/hero.png")
-            print("Hero screenshot taken.")
+        # Desktop View Verification
+        context_desktop = browser.new_context(viewport={'width': 1920, 'height': 1080})
+        page_desktop = context_desktop.new_page()
+        page_desktop.goto("http://localhost:3000")
 
-            # Scroll down to see other sections and take screenshot
-            page.evaluate("window.scrollTo(0, 1000)")
-            page.wait_for_timeout(2000) # Wait for animations
-            page.screenshot(path="verification/services.png")
-            print("Services screenshot taken.")
+        # Wait for hero content
+        expect(page_desktop.get_by_text("Build & Scale")).to_be_visible(timeout=10000)
 
-             # Scroll down to see other sections and take screenshot
-            page.evaluate("window.scrollTo(0, 2000)")
-            page.wait_for_timeout(2000) # Wait for animations
-            page.screenshot(path="verification/work.png")
-            print("Work screenshot taken.")
+        # Hover interaction test (Development side)
+        dev_side = page_desktop.locator("text=The Engineer").first
+        dev_side.hover()
+        page_desktop.wait_for_timeout(1000) # Wait for animation
+        page_desktop.screenshot(path="verification/desktop_hover_dev.png")
+        print("Desktop dev hover verified")
 
-            # Take a full page screenshot
-            page.screenshot(path="verification/full_page.png", full_page=True)
-            print("Full page screenshot taken.")
+        # Scroll to Development Section
+        page_desktop.get_by_role("link", name="Development").click()
+        page_desktop.wait_for_timeout(1000) # Wait for scroll
+        page_desktop.screenshot(path="verification/desktop_dev_section.png")
+        print("Desktop dev section verified")
 
-        except Exception as e:
-            print(f"Error: {e}")
-        finally:
-            browser.close()
+        browser.close()
 
 if __name__ == "__main__":
     verify_grainz_studio()
