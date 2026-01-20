@@ -1,7 +1,6 @@
 
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import MagneticButton from './ui/MagneticButton';
 
 const projects = [
   {
@@ -114,11 +113,9 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
           </p>
         </div>
         <div className="mt-4 md:mt-0 overflow-hidden">
-            <MagneticButton>
-                <span className="inline-block transform translate-y-0 text-sm font-medium uppercase tracking-wider px-4 py-2 border border-white/20 rounded-full hover:bg-white hover:text-black transition-colors">
-                    View Case Study
-                </span>
-            </MagneticButton>
+          <button className="inline-block transform translate-y-0 text-sm font-medium uppercase tracking-wider px-4 py-2 border border-white/20 rounded-full hover:bg-white hover:text-black transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black">
+            View Case Study
+          </button>
         </div>
       </div>
     </motion.div>

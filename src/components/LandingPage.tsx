@@ -9,7 +9,6 @@ import Process from './Process';
 import WhyUs from './WhyUs';
 import Cta from './Cta';
 import Footer from './Footer';
-import CustomCursor from './ui/CustomCursor';
 
 const LandingPage = () => {
   useEffect(() => {
@@ -49,8 +48,7 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="bg-black text-white overflow-x-hidden font-sans selection:bg-white selection:text-black cursor-none">
-      <CustomCursor />
+    <div className="bg-black text-white overflow-x-hidden font-sans selection:bg-white selection:text-black">
       {/* Navigation */}
       <div className="fixed top-6 left-0 w-full z-50 flex justify-center pointer-events-none">
         <nav className="pointer-events-auto bg-white/5 backdrop-blur-xl border border-white/10 rounded-full px-8 py-3 flex items-center gap-8 shadow-2xl">
