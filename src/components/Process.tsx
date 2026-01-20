@@ -49,7 +49,7 @@ const Process = () => {
         <div className="space-y-12">
           {steps.map((step, index) => (
             <motion.div
-              key={index}
+              key={step.phase}
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
