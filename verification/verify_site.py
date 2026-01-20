@@ -1,37 +1,33 @@
 
 from playwright.sync_api import sync_playwright
 
-def verify_grainz_studio():
+def verify_hero():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
-
-        # Navigate to the local server
         try:
-            page.goto("http://localhost:8080", timeout=30000)
+            page.goto("http://localhost:3000")
+            page.wait_for_selector("video", state="visible", timeout=10000)
 
-            # Wait for content to load (check for Hero text)
-            page.wait_for_selector("text=Design and build digital experiences")
-
-            # Take a screenshot of the Hero section
+            # Take screenshot of Hero
             page.screenshot(path="verification/hero.png")
-            print("Hero screenshot taken.")
 
-            # Scroll down to see other sections and take screenshot
+            # Check for overlay (should be gone)
+            overlay = page.query_selector(".bg-black\/60")
+            if overlay:
+                print("Overlay found! (Unexpected)")
+            else:
+                print("No overlay found. (Expected)")
+
+            # Scroll to Services
             page.evaluate("window.scrollTo(0, 1000)")
-            page.wait_for_timeout(2000) # Wait for animations
+            page.wait_for_timeout(1000)
             page.screenshot(path="verification/services.png")
-            print("Services screenshot taken.")
 
-             # Scroll down to see other sections and take screenshot
+            # Scroll to Work
             page.evaluate("window.scrollTo(0, 2000)")
-            page.wait_for_timeout(2000) # Wait for animations
+            page.wait_for_timeout(1000)
             page.screenshot(path="verification/work.png")
-            print("Work screenshot taken.")
-
-            # Take a full page screenshot
-            page.screenshot(path="verification/full_page.png", full_page=True)
-            print("Full page screenshot taken.")
 
         except Exception as e:
             print(f"Error: {e}")
@@ -39,4 +35,4 @@ def verify_grainz_studio():
             browser.close()
 
 if __name__ == "__main__":
-    verify_grainz_studio()
+    verify_hero()

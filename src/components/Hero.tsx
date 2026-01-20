@@ -18,38 +18,46 @@ const Hero = () => {
           // TODO: Replace with valid poster URL
           style={{ backgroundColor: 'black' }}
           onLoadedData={() => setIsVideoLoaded(true)}
-          className={`w-full h-full object-cover transition-opacity duration-1000 ${isVideoLoaded ? 'opacity-50' : 'opacity-50'}`}
+          className={`w-full h-full object-cover transition-opacity duration-1000 ${isVideoLoaded ? 'opacity-100' : 'opacity-0'}`}
         >
           {/* Background video */}
           <source src="/dunethemebg.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-        {/* Overlay for better text contrast */}
-        <div className="absolute inset-0 bg-black/60 z-10"></div>
       </div>
 
       {/* Content */}
-      <div className="relative z-20 container mx-auto px-6 md:px-12 flex flex-col items-center text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-        >
-          <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold text-white tracking-tight leading-[1.1] mb-6 max-w-5xl">
-            Design and build digital experiences that move brands forward.
-          </h1>
-        </motion.div>
+      <div className="relative z-20 container mx-auto px-6 md:px-12 flex flex-col items-center text-center mix-blend-difference text-white">
+        <div className="overflow-hidden">
+          <motion.div
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          >
+            <h1 className="text-4xl md:text-6xl lg:text-8xl font-bold tracking-tight leading-[1.1] mb-6 max-w-6xl">
+              Structuring the Intangible.<br />Where Industrial Precision meets Digital Fluidity.
+            </h1>
+          </motion.div>
+        </div>
+
+        <div className="overflow-hidden">
+          <motion.div
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+            className="flex flex-col items-center"
+          >
+            <p className="text-lg md:text-xl text-gray-200 max-w-3xl mb-10 font-light uppercase tracking-widest">
+              GRAINZ STUDIO. Kinetic Interfaces. Digital Craftsmanship. Structural Web Design.
+            </p>
+          </motion.div>
+        </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
-          className="flex flex-col items-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.8 }}
         >
-          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mb-10 font-light">
-            GRAINZ STUDIO creates systems, strategy, and design for the modern web.
-          </p>
-
           <a
             href="#contact"
             className="group relative inline-flex items-center justify-center px-8 py-4 bg-white text-black rounded-full font-medium text-lg overflow-hidden transition-transform hover:scale-105"

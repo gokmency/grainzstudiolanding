@@ -1,5 +1,7 @@
 
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { useRef } from 'react';
+import MagneticButton from './ui/MagneticButton';
 
 const projects = [
   {
@@ -35,6 +37,94 @@ const generateSrcSet = (url: string) => {
   return widths.map(w => `${getUnsplashUrl(url, w)} ${w}w`).join(', ');
 };
 
+interface Project {
+  title: string;
+  category: string;
+  image: string;
+}
+
+const ProjectCard = ({ project, index }: { project: Project, index: number }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const xSpring = useTransform(x, [-0.5, 0.5], ["-5deg", "5deg"]);
+  const ySpring = useTransform(y, [-0.5, 0.5], ["5deg", "-5deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+
+    const rect = ref.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8, delay: 0.1 }}
+      className="group cursor-pointer perspective-1000"
+      style={{
+        transformStyle: "preserve-3d",
+      }}
+    >
+      <motion.div
+        style={{
+          rotateX: ySpring,
+          rotateY: xSpring,
+        }}
+        className="relative aspect-video md:aspect-[21/9] overflow-hidden rounded-sm bg-zinc-900 mb-8 transform-gpu transition-all duration-200 ease-linear"
+      >
+        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500 z-10" />
+        <motion.img
+          src={project.image}
+          srcSet={generateSrcSet(project.image)}
+          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1280px"
+          alt={project.title}
+          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        />
+      </motion.div>
+
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-t border-zinc-800 pt-6">
+        <div>
+          <h3 className="text-3xl md:text-4xl font-semibold mb-2 text-white group-hover:text-gray-300 transition-colors">
+            {project.title}
+          </h3>
+          <p className="text-gray-500 font-mono text-sm">
+            {project.category}
+          </p>
+        </div>
+        <div className="mt-4 md:mt-0 overflow-hidden">
+            <MagneticButton>
+                <span className="inline-block transform translate-y-0 text-sm font-medium uppercase tracking-wider px-4 py-2 border border-white/20 rounded-full hover:bg-white hover:text-black transition-colors">
+                    View Case Study
+                </span>
+            </MagneticButton>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 const SelectedWork = () => {
   return (
     <section id="work" className="py-24 bg-black text-white px-6 md:px-12">
@@ -56,42 +146,7 @@ const SelectedWork = () => {
 
         <div className="space-y-24 md:space-y-32">
           {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="group cursor-pointer"
-            >
-              <div className="relative aspect-video md:aspect-[21/9] overflow-hidden rounded-sm bg-zinc-900 mb-8">
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500 z-10" />
-                <motion.img
-                  src={project.image}
-                  srcSet={generateSrcSet(project.image)}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1280px"
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  whileHover={{ scale: 1.05 }}
-                />
-              </div>
-
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-t border-zinc-800 pt-6">
-                <div>
-                  <h3 className="text-3xl md:text-4xl font-semibold mb-2 text-white group-hover:text-gray-300 transition-colors">
-                    {project.title}
-                  </h3>
-                  <p className="text-gray-500 font-mono text-sm">
-                    {project.category}
-                  </p>
-                </div>
-                <div className="mt-4 md:mt-0 overflow-hidden">
-                   <span className="inline-block transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 text-sm font-medium uppercase tracking-wider">
-                     View Case Study
-                   </span>
-                </div>
-              </div>
-            </motion.div>
+            <ProjectCard key={index} project={project} index={index} />
           ))}
         </div>
 
