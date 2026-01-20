@@ -24,6 +24,17 @@ const projects = [
   }
 ];
 
+const getUnsplashUrl = (url: string, width: number) => {
+  const u = new URL(url);
+  u.searchParams.set('w', width.toString());
+  return u.toString();
+};
+
+const generateSrcSet = (url: string) => {
+  const widths = [640, 1024, 1500, 2070];
+  return widths.map(w => `${getUnsplashUrl(url, w)} ${w}w`).join(', ');
+};
+
 const SelectedWork = () => {
   return (
     <section id="work" className="py-24 bg-black text-white px-6 md:px-12">
@@ -57,6 +68,8 @@ const SelectedWork = () => {
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors duration-500 z-10" />
                 <motion.img
                   src={project.image}
+                  srcSet={generateSrcSet(project.image)}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1280px"
                   alt={project.title}
                   className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   whileHover={{ scale: 1.05 }}
