@@ -15,11 +15,13 @@ const Hero = () => {
           loop
           muted
           playsInline
+          // TODO: Replace with valid poster URL
+          style={{ backgroundColor: 'black' }}
           onLoadedData={() => setIsVideoLoaded(true)}
-          className={`w-full h-full object-cover transition-opacity duration-1000 ${isVideoLoaded ? 'opacity-50' : 'opacity-0'}`}
+          className={`w-full h-full object-cover transition-opacity duration-1000 ${isVideoLoaded ? 'opacity-50' : 'opacity-50'}`}
         >
-          {/* Placeholder abstract digital video */}
-          <source src="https://cdn.coverr.co/videos/coverr-abstract-digital-tunnel-4586/1080p.mp4" type="video/mp4" />
+          {/* Background video */}
+          <source src="/dunethemebg.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         {/* Overlay for better text contrast */}
